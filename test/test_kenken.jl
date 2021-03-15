@@ -1,4 +1,4 @@
-using KenKen
+using CSPSolver
 using Test
 
 @testset "eliminate tests" begin
@@ -9,7 +9,7 @@ using Test
         CellConstraint(2, (1, 3)),
         CellConstraint(3, (3, 1)),
     ]
-    kk = KenkenCSP(constrs , 3)
+    kk = KenKen(constrs , 3)
 
     eliminate!(kk)
     fill_in!(kk)
@@ -27,7 +27,7 @@ end
         CellConstraint(2, (1, 3)),
         CellConstraint(3, (3, 1)),
     ]
-    kk = KenkenCSP(constrs , 3)
+    kk = KenKen(constrs , 3)
 
     kk.domains[1, 1] = [1, 0, 0]
     kk.domains[2, 2] = [0, 1, 0]
@@ -52,7 +52,7 @@ end
         CellConstraint(2, (3, 3)),
         CellConstraint(3, (4, 1)),
     ]
-    kk = KenkenCSP(constrs , 4)
+    kk = KenKen(constrs , 4)
 
     res = backtrack(kk)
     @test !isnothing(res)
@@ -70,7 +70,7 @@ end
         CageConstraint(2, [(3, 3), (4, 3)], ÷),
         CageConstraint(4, [(3, 4), (4, 4)], +),
     ]
-    kk = KenkenCSP(constrs , 4)
+    kk = KenKen(constrs , 4)
 
     res = backtrack(kk)
     @test !isnothing(res)
@@ -96,7 +96,7 @@ end
         CageConstraint(11, [(6, 3), (6, 4), (6, 5)], +),
         CageConstraint(3, [(5, 6), (6, 6)], ÷),
     ]
-    kk = KenkenCSP(constrs, 6)
+    kk = KenKen(constrs, 6)
 
     res = backtrack(kk)
     @test !isnothing(res)
@@ -120,7 +120,7 @@ end
         CageConstraint(96, [(5, 5), (6, 5), (6, 4)], *),
         CageConstraint(5, [(5, 6), (6, 6)], +),
     ]
-    kk = KenkenCSP(constrs, 6)
+    kk = KenKen(constrs, 6)
 
     res = backtrack(kk)
     @test !isnothing(res)
@@ -166,7 +166,7 @@ end
 #         CageConstraint(36, [(9, 6), (9, 5)], *),
 #     ]
 #
-#     kk = KenkenCSP(constrs, 9)
+#     kk = GridCSP(constrs, 9)
 #
 #     res = backtrack(kk)
 #     @test !isnothing(res)
