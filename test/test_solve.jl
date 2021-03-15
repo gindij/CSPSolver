@@ -77,7 +77,7 @@ end
     @test consistent(res) && complete(res)
 end
 
-@testset "backtrack 6x6 hard tests" begin
+@testset "backtrack 6x6 hard test 1" begin
     constrs = [
         CageConstraint(1, [(1, 1), (2, 1)], -),
         CageConstraint(11, [(1, 2), (2, 2), (1, 3)], +),
@@ -95,6 +95,30 @@ end
         CageConstraint(1, [(4, 5), (5, 5)], -),
         CageConstraint(11, [(6, 3), (6, 4), (6, 5)], +),
         CageConstraint(3, [(5, 6), (6, 6)], ÷),
+    ]
+    kk = KenkenCSP(constrs, 6)
+
+    res = backtrack(kk)
+    @test !isnothing(res)
+    @test consistent(res) && complete(res)
+end
+
+@testset "backtrack 6x6 hard test 2" begin
+    constrs = [
+        CageConstraint(2, [(1, 1), (1, 2)], ÷),
+        CageConstraint(18, [(1, 3), (1, 4), (1, 5)], *),
+        CageConstraint(15, [(3, 6), (2, 6), (1, 6)], +),
+        CageConstraint(10, [(2, 1), (2, 2), (3, 1)], +),
+        CageConstraint(8, [(2, 3), (2, 4), (2, 5)], +),
+        CageConstraint(72, [(3, 3), (3, 2), (3, 4), (4, 3)], *),
+        CageConstraint(3, [(3, 5), (4, 5)], -),
+        CageConstraint(2, [(4, 1), (5, 1)], -),
+        CageConstraint(3, [(4, 2), (5, 2)], ÷),
+        CageConstraint(15, [(4, 4), (5, 4)], *),
+        CellConstraint(1, (4, 6)),
+        CageConstraint(3, [(5, 3), (6, 3)], -),
+        CageConstraint(96, [(5, 5), (6, 5), (6, 4)], *),
+        CageConstraint(5, [(5, 6), (6, 6)], +),
     ]
     kk = KenkenCSP(constrs, 6)
 
