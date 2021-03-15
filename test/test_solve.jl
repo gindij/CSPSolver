@@ -1,17 +1,6 @@
 using KenKen
 using Test
 
-@testset "complete tests" begin
-    t = [1  2 -1;
-         2 -1 -1;
-         3  1  2]
-
-    @test !complete(RowConstraint(1), t)
-    @test complete(ColumnConstraint(1), t)
-    @test !complete(CageConstraint(5, [(1, 2), (1, 3)], +), t)
-    @test complete(CageConstraint(5, [(1, 1), (2, 1)], +), t)
-end
-
 @testset "eliminate tests" begin
     constrs = [
         CageConstraint(3, [(1, 1), (2, 1)], +),
@@ -27,7 +16,7 @@ end
     eliminate!(kk)
     fill_in!(kk)
 
-
+    @test consistent(kk)
 end
 
 @testset "fill_in tests" begin
@@ -157,4 +146,5 @@ end
 #
 #     res = backtrack(kk)
 #     @test !isnothing(res)
+#     display(res.variables)
 # end

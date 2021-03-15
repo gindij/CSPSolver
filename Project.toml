@@ -3,6 +3,9 @@ uuid = "2102bd0a-769c-4b00-85bb-ef4a1f237521"
 authors = ["gindije <gindije@gmail.com> and contributors"]
 version = "0.1.0"
 
+[deps]
+Profile = "9abbd945-dff8-562f-b5e8-e1ebf5ef1b79"
+
 [compat]
 julia = "1"
 
