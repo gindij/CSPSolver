@@ -1,6 +1,6 @@
 name = "KenKen"
-uuid = "e1639f71-976e-4353-a0a8-e0efc4bd4797"
-authors = ["jackgindi <jgindi@sas.upenn.edu> and contributors"]
+uuid = "2102bd0a-769c-4b00-85bb-ef4a1f237521"
+authors = ["gindije <gindije@gmail.com> and contributors"]
 version = "0.1.0"
 
 [compat]
