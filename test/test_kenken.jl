@@ -54,7 +54,7 @@ end
     ]
     kk = KenKen(constrs , 4)
 
-    res = backtrack(kk)
+    res = backtrack(kk, 1)
     @test !isnothing(res)
     @test res.variables == [2 3 1 4; 4 2 3 1; 1 4 2 3; 3 1 4 2]
 end
@@ -72,7 +72,7 @@ end
     ]
     kk = KenKen(constrs , 4)
 
-    res = backtrack(kk)
+    res = backtrack(kk, 1)
     @test !isnothing(res)
     @test consistent(res) && complete(res)
 end
@@ -98,7 +98,7 @@ end
     ]
     kk = KenKen(constrs, 6)
 
-    res = backtrack(kk)
+    res = backtrack(kk, 1)
     @test !isnothing(res)
     @test consistent(res) && complete(res)
 end
@@ -122,7 +122,7 @@ end
     ]
     kk = KenKen(constrs, 6)
 
-    res = backtrack(kk)
+    res = backtrack(kk, 1)
     @test !isnothing(res)
     @test consistent(res) && complete(res)
 end

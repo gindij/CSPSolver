@@ -134,24 +134,23 @@ function find_next_unset(csp::GridCSP)
 end
 
 """
-Find a solution for an arbitrary Kenken using backtracking search. At each
-step, the algorithm makes an elimination pass, and then checks whether the resulting
-board is a solution. If it is, we return it. If not, we find a cell whose value
-has not been set, choose one of the remaining candidates for that cell, and then
-recurse.
+Find solutions to arbitrary GridCSP by backtracking.
 """
-function backtrack(csp::GridCSP)
+function backtrack(csp::GridCSP, n_solutions::Int)
+    solutions = GridCSP[]
+    backtrack!(csp, solutions, n_solutions)
+    return n_solutions == 1 ? solutions[1] : solutions
+end
+
+function backtrack!(csp::GridCSP, solutions::Array{GridCSP, 1}, n_solutions::Int)
     eliminate!(csp)
     cons = consistent(csp)
     if !cons
         return
     end
-    if complete(csp)
-        if cons
-            return csp
-        else
-            return
-        end
+    if complete(csp) && cons
+        push!(solutions, csp)
+        return
     end
     k = size(csp)
     i, j = find_next_unset(csp)
@@ -162,9 +161,11 @@ function backtrack(csp::GridCSP)
         cspcpy = deepcopy(csp)
         set_domain!(i, j, l, cspcpy.domains)
         set_cell!(i, j, l, cspcpy.variables)
-        res = backtrack(cspcpy)
-        if !isnothing(res)
-            return res
+        backtrack!(cspcpy, solutions, n_solutions)
+        # if we have more solutions than we want, terminate
+        if length(solutions) ≥ n_solutions
+            break
         end
     end
+    return solutions[1:min(length(solutions), n_solutions)]
 end

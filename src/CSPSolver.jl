@@ -8,6 +8,6 @@ export Constraint, CellConstraint, RowConstraint, ColumnConstraint
 export GridCSP, KenKen, Sudoku
 export CageConstraint  # KenKen
 export BoxConstraint   # Sudoku
-export consistent, complete, eliminate!, fill_in!, backtrack
+export consistent, complete, eliminate!, fill_in!, backtrack, generate_random_sudoku
 
 end

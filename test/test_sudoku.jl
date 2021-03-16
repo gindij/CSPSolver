@@ -1,40 +1,50 @@
 using CSPSolver
+using Random
 using Test
 
-@testset "sudoku easy 1 tests" begin
+@testset "sudoku easy 1" begin
     board = [
-        3 -1 -1 -1 -1 -1 -1 6 8;
-        7 6 2 1 -1 -1 3 4 -1;
-        -1 4 -1 -1 -1 -1 -1 -1 -1;
-        -1 -1 9 -1 -1 3 -1 5 7;
-        -1 -1 5 2 6 -1 -1 8 -1;
-        -1 8 7 -1 1 -1 -1 -1 -1;
-        8 -1 -1 6 7 1 -1 -1 -1;
-        -1 2 -1 -1 8 4 5 7 3;
-        9 -1 -1 3 5 2 8 1 -1
+         3 -1 -1 -1 -1 -1 -1  6  8;
+         7  6  2  1 -1 -1  3  4 -1;
+        -1  4 -1 -1 -1 -1 -1 -1 -1;
+        -1 -1  9 -1 -1  3 -1  5  7;
+        -1 -1  5  2  6 -1 -1  8 -1;
+        -1  8  7 -1  1 -1 -1 -1 -1;
+         8 -1 -1  6  7  1 -1 -1 -1;
+        -1  2 -1 -1  8  4  5  7  3;
+         9 -1 -1  3  5  2  8  1 -1
     ]
 
     s = Sudoku(board)
-    res = backtrack(s)
+    res = backtrack(s, 1)
     @test !isnothing(res)
-    display(res.variables)
 end
 
-@testset "sudoku hard 1 tests" begin
+@testset "sudoku hard 1" begin
     board = [
-        -1 -1 5 -1 -1 2 -1 4 -1;
-        -1 7 -1 -1 4 -1 -1 9 8;
-        -1 -1 6 -1 3 -1 -1 7 -1;
-        4 -1 -1 3 -1 -1 -1 -1 1;
-        -1 9 -1 -1 -1 -1 -1 2 -1;
-        -1 -1 -1 -1 -1 -1 6 -1 -1;
-        -1 -1 3 9 7 -1 -1 -1 -1;
-        5 -1 -1 -1 -1 -1 2 -1 -1;
-        -1 -1 -1 1 -1 -1 -1 -1 -1
+        -1 -1  5 -1 -1  2 -1  4 -1;
+        -1  7 -1 -1  4 -1 -1  9  8;
+        -1 -1  6 -1  3 -1 -1  7 -1;
+         4 -1 -1  3 -1 -1 -1 -1  1;
+        -1  9 -1 -1 -1 -1 -1  2 -1;
+        -1 -1 -1 -1 -1 -1  6 -1 -1;
+        -1 -1  3  9  7 -1 -1 -1 -1;
+         5 -1 -1 -1 -1 -1  2 -1 -1;
+        -1 -1 -1  1 -1 -1 -1 -1 -1
     ]
 
     s = Sudoku(board)
-    res = backtrack(s)
+    res = backtrack(s, 1)
     @test !isnothing(res)
-    display(res.variables)
+end
+
+@testset "sudoku generate" begin
+    Random.seed!(1)
+    board, solution = generate_random_sudoku(1)
+    s = Sudoku(board)
+    solutions = backtrack(s, 2)
+    # even though we asked for 2 solutions, there should only be 1
+    @test length(solutions) == 1
+    # the one solution found must be the solution provided
+    @test solutions[1].variables == solution
 end
