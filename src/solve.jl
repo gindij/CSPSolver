@@ -8,6 +8,18 @@ struct GridCSP
     domains::Array{BitArray, 2}
 end
 
+function GridCSP(constraints::Array{Constraint, 1}, k::Int)
+    vars = -ones(Int, k, k)
+    domains = Array{BitArray, 2}(undef, k, k)
+    for i = 1:k
+        for j = 1:k
+            domains[i, j] = BitArray(undef, k)
+            domains[i, j] .+= 1
+        end
+    end
+    return GridCSP(vars, constraints, domains)
+end
+
 size(csp::GridCSP) = size(csp.domains, 1)
 deepcopy(csp::GridCSP) = GridCSP(
     deepcopy(csp.variables),
@@ -136,13 +148,13 @@ end
 """
 Find solutions to arbitrary GridCSP by backtracking.
 """
-function backtrack(csp::GridCSP, n_solutions::Int)
+function backtrack(csp::GridCSP, n_solutions::Int; randomize::Bool = false)
     solutions = GridCSP[]
-    backtrack!(csp, solutions, n_solutions)
+    backtrack!(csp, solutions, n_solutions, randomize)
     return n_solutions == 1 ? solutions[1] : solutions
 end
 
-function backtrack!(csp::GridCSP, solutions::Array{GridCSP, 1}, n_solutions::Int)
+function backtrack!(csp::GridCSP, solutions::Array{GridCSP, 1}, n_solutions::Int, randomize::Bool)
     eliminate!(csp)
     cons = consistent(csp)
     if !cons
@@ -157,11 +169,14 @@ function backtrack!(csp::GridCSP, solutions::Array{GridCSP, 1}, n_solutions::Int
     dom = csp.domains[i, j]
     cands = 1:k
     cands = cands[dom[cands] .== 1]
+    if randomize
+        cands = cands[randperm(length(cands))]
+    end
     for l = cands
         cspcpy = deepcopy(csp)
         set_domain!(i, j, l, cspcpy.domains)
         set_cell!(i, j, l, cspcpy.variables)
-        backtrack!(cspcpy, solutions, n_solutions)
+        backtrack!(cspcpy, solutions, n_solutions, randomize)
         # if we have more solutions than we want, terminate
         if length(solutions) ≥ n_solutions
             break

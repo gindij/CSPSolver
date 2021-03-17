@@ -1,4 +1,5 @@
 using CSPSolver
+using Random
 using Test
 
 @testset "eliminate tests" begin
@@ -125,6 +126,16 @@ end
     res = backtrack(kk, 1)
     @test !isnothing(res)
     @test consistent(res) && complete(res)
+end
+
+@testset "generate kenken" begin
+    Random.seed!(1)
+    for k = 3:7
+        kk, sol = generate_random_kenken(k)
+        solution = backtrack(kk, 2)
+        @test length(solution) == 1
+        @test solution[1].variables == sol
+    end
 end
 
 # @testset "backtrack 9x9 hard tests" begin
